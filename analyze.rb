@@ -4,6 +4,7 @@ require 'pp'
 class Wordle
   if d = __dir__
     WORDS_FILE = d + "/words.json"
+    CANDIDATES_FILE = d + "/candidates.json"
   else
     raise "Unable to locate word list"
   end
@@ -36,7 +37,9 @@ class Wordle
 
     result
   end
-
+  def self.candidates
+    @candidates ||=JSON.parse(File.read(CANDIDATES_FILE))
+  end
   def self.words
     @words ||= JSON.parse(File.read(WORDS_FILE))
   end
@@ -47,7 +50,7 @@ class Wordle
 
     n = words.size
 
-    words.each_with_index do |guess, idx|
+    candidates.each_with_index do |guess, idx|
       puts "Analyzing #{idx+1} of #{n}"
 
       replies = Hash.new(0)
